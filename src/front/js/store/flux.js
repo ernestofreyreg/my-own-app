@@ -2,18 +2,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			authToken: null,
+			authError: null,
+
+			userInfo: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -41,6 +33,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+
+			loginUser: (email, password) => {
+				fetch(process.env.BACKEND_URL + "/api/login", {
+					method: "POST",
+					mode: "cors",
+					body: JSON.stringify({ email, password }),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+					.then(resp => resp.json())
+					.then(data => setStore({ authToken: data.token, authError: null }))
+					.catch(error => setStore({ authToken: null, authError: error }));
 			}
 		}
 	};
