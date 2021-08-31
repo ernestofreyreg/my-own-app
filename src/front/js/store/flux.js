@@ -3,8 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			authToken: null,
-			authError: null,
-			userInfo: null
+			authError: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -34,6 +33,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 
+			registerUser: (email, password) => {
+				fetch(process.env.BACKEND_URL + "/api/register", {
+					method: "POST",
+					mode: "cors",
+					body: JSON.stringify({ email, password }),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+					.then(resp => {
+						if (resp.status !== 204) {
+							throw new Error("register-error");
+						}
+
+						getActions().loginUser(email, password);
+					})
+					.catch(error => setStore({ authError: error, authToken: null }));
+			},
+
+			logout: () => setStore({ authToken: null }),
+
 			loginUser: (email, password) => {
 				fetch(process.env.BACKEND_URL + "/api/login", {
 					method: "POST",
@@ -43,7 +63,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"Content-Type": "application/json"
 					}
 				})
-					.then(resp => resp.json())
+					.then(resp => {
+						if (resp.status !== 200) {
+							throw new Error("authentication-error");
+						}
+
+						return resp.json();
+					})
 					.then(data => setStore({ authToken: data.token, authError: null }))
 					.catch(error => setStore({ authToken: null, authError: error }));
 			}

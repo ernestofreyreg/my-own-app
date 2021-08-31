@@ -1,13 +1,26 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export function LoginUser() {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
+	const history = useHistory();
 	const { store, actions } = React.useContext(Context);
+
+	React.useEffect(
+		() => {
+			if (store.authToken) {
+				history.push("/dashboard");
+			}
+		},
+		[store.authToken]
+	);
 
 	return (
 		<div className="container">
+			{store.authError && <div className="alert alert-danger">Authentication Error</div>}
+
 			<div className="form-floating mb-3">
 				<label>Email address</label>
 				<input
