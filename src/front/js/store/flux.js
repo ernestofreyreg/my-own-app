@@ -4,7 +4,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			authToken: null,
 			authError: null,
-
 			userInfo: null
 		},
 		actions: {
