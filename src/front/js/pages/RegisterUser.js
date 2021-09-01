@@ -19,6 +19,7 @@ export function RegisterUser() {
 
 	return (
 		<div className="container">
+			<h3>Register User</h3>
 			{store.authError && <div className="alert alert-danger">Authentication Error</div>}
 
 			<div className="form-floating mb-3">
