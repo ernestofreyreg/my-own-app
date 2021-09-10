@@ -1,26 +1,26 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { useAuth } from "../store/flux";
 
 export function LoginUser() {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const history = useHistory();
-	const { store, actions } = React.useContext(Context);
+	const auth = useAuth();
 
 	React.useEffect(
 		() => {
-			if (store.authToken) {
+			if (auth.authToken) {
 				history.push("/dashboard");
 			}
 		},
-		[store.authToken]
+		[auth.authToken]
 	);
 
 	return (
 		<div className="container">
 			<h3>Login User</h3>
-			{store.authError && <div className="alert alert-danger">Authentication Error</div>}
+			{auth.authError && <div className="alert alert-danger">Authentication Error</div>}
 
 			<div className="form-floating mb-3">
 				<label>Email address</label>
@@ -43,7 +43,7 @@ export function LoginUser() {
 				/>
 			</div>
 
-			<button className="btn btn-primary mt-3" onClick={() => actions.loginUser(email, password)}>
+			<button className="btn btn-primary mt-3" onClick={() => auth.loginUser(email, password)}>
 				Login
 			</button>
 		</div>
