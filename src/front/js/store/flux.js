@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(data => setStore({ message: data.message }))
 					.catch(error => console.log("Error loading message from backend", error));
 			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
