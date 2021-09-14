@@ -1,10 +1,11 @@
 import React from "react";
 import { useAuth } from "../store/auth";
-import { useQueryData } from "../store/data";
+import { useQueryData, useUpdateData } from "../store/data";
 
 export function Dashboard() {
 	const auth = useAuth();
 	const { loading, data } = useQueryData("/api/userinfo");
+	const { updating, updated, updateData } = useUpdateData("/api/userinfo");
 
 	return (
 		<div>
@@ -16,9 +17,9 @@ export function Dashboard() {
 					<div className="card-body">
 						<h5 className="card-title">User Info</h5>
 						<p className="card-text">{data.email}</p>
-						<a href="#" className="btn btn-primary">
-							Go somewhere
-						</a>
+						<button onClick={() => updateData({ email: "jhon@gmail.com" })}>
+							Update Email to jhon@gmail.com
+						</button>
 					</div>
 				</div>
 			)}
