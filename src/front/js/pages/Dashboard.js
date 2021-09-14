@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "../store/flux";
+import { useAuth } from "../store/auth";
 
 export function Dashboard() {
 	const auth = useAuth();
